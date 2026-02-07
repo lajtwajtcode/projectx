@@ -3,6 +3,8 @@
  * Local execution, data export via on-screen display + CSV download.
  * + Iteration 004.1: POST results to Formspree on finish (serverless collection)
  */
+const htmlButtonResponse = jsPsychHtmlButtonResponse;
+const htmlKeyboardResponse = jsPsychHtmlKeyboardResponse;
 
 (function () {
   'use strict';
@@ -78,23 +80,25 @@
   jsPsych.data.addProperties({ subject_id: subjectId });
 
   var welcome = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<p>Minimal task (Iteration 002).</p><p>Press any key to start.</p>',
-    choices: 'ALL_KEYS'
+    type: htmlButtonResponse,
+    stimulus: '<p>Minimal task (Iteration 002).</p><p>Tap <b>Start</b> to begin.</p>',
+    choices: ['Start']
   };
-
+  
   var trials = [
-    { type: jsPsychHtmlKeyboardResponse, stimulus: '<p>Press any key.</p>', choices: 'ALL_KEYS' },
-    { type: jsPsychHtmlKeyboardResponse, stimulus: '<p>Press any key again.</p>', choices: 'ALL_KEYS' },
-    { type: jsPsychHtmlKeyboardResponse, stimulus: '<p>Last trial. Press any key.</p>', choices: 'ALL_KEYS' }
+    { type: htmlButtonResponse, stimulus: '<p>Step 1/3 – Tap <b>Next</b>.</p>', choices: ['Next'] },
+    { type: htmlButtonResponse, stimulus: '<p>Step 2/3 – Tap <b>Next</b>.</p>', choices: ['Next'] },
+    { type: htmlButtonResponse, stimulus: '<p>Step 3/3 – Tap <b>Finish</b> to submit.</p><p style="font-size:12px;opacity:0.7;">Wait 2–3 seconds after finishing.</p>', choices: ['Finish'] }
   ];
-
+  
   var goodbye = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<p>Done. Data will appear below.</p>',
-    choices: 'ALL_KEYS'
+    type: htmlButtonResponse,
+    stimulus: '<p>Done. Submitting…</p>',
+    choices: ['Show data']
   };
-
+  
   var timeline = [welcome].concat(trials).concat([goodbye]);
   jsPsych.run(timeline);
+  
 })();
+
